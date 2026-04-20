@@ -4,6 +4,8 @@
 
 Proposal-first research, grounded in evidence.
 
+> Terminal-first today. Full end-to-end web interface coming soon.
+
 ScholarClaw is a research system for people who want stronger research judgment, not just faster output.
 
 It is built for a different kind of workflow: one that tests the idea before it tries to finish the paper.
@@ -31,36 +33,41 @@ ScholarClaw helps researchers:
 - Stage-specific model routing, checkpoint/resume support, and local-model friendly operation
 - Benchmark-aware experiment planning and figure-planning/chart-generation paths
 
-## Full Feature List
+## Full Feature Comparison with AutoResearchClaw
 
-| Area | Feature | What It Does |
-| --- | --- | --- |
-| Workflow | 29-stage pipeline | Moves work from topic framing through literature, synthesis, experiment design, execution, writing, review, revision, verification, and export. |
-| Workflow | Bucketed execution | Separates work into `proposal`, `execution`, `publication`, `review`, and `revision` buckets so users can run focused parts of the system. |
-| Literature | OpenAlex-first retrieval | Uses OpenAlex as the primary API search backend, backed by Semantic Scholar and arXiv for broader literature coverage. |
-| Literature | Agentic browser retrieval | Searches scholarly websites directly through browser automation when browser-based source access is preferred. |
-| Literature | Browser target registry | Supports default browser targets including Semantic Scholar, arXiv, Elsevier / ScienceDirect, Springer, IEEE Xplore, Google Scholar, and Web of Science. |
-| Literature | Year and depth controls | Lets users constrain literature review by recent-year presets or explicit ranges, and adjust breadth with `fast`, `standard`, `deep`, and `exhaustive` modes. |
-| Literature | Search hardening | Generates grounded search strategies, hardens weak queries, expands search coverage, and applies unified filtering and deduplication. |
-| Literature | Goal grounding | Collects candidate evidence early and can export verified-only references to support proposal shaping. |
-| Screening | Multiple screening modes | Supports `deterministic`, `llm`, and `hybrid` screening configurations for different judgment and safety preferences. |
-| Research judgment | Novelty and positioning checks | Tests ideas against gathered literature, surfaces novelty risks, and helps identify weak framing or missing comparisons. |
-| Citation hygiene | Citation verification | Verifies citations through DOI, arXiv IDs, title matching, and OpenAlex-backed confirmation paths. |
-| Citation hygiene | Relevance pruning | Scores verified citations for topical relevance and can drop weak references instead of keeping every valid citation. |
-| Writing | Publication-aware writing | Supports publication-family aware writing behavior, publication templates, and custom LaTeX template paths. |
-| Experiments | BenchmarkAgent | Helps benchmark-style ML work by selecting datasets and baselines and injecting validated benchmark choices into experiment planning. |
-| Figures | FigureAgent | Plans and generates figures early enough for the drafting stage to reference visuals, with fallback chart generation when needed. |
-| Review | Parallel reviewer workflows | Runs multiple reviewer perspectives in parallel and synthesizes them through an editor-style decision stage. |
-| Review | Resumable review state | Persists reviewer outputs and review manifests so completed reviews can be reused instead of rerun. |
-| Revision | Structured revision workflow | Builds revision plans from editor `must_fix` items and reviewer feedback, then supports response and apply stages. |
-| Runtime | Stage-specific model routing | Allows different models to be assigned to different stage groups through YAML configuration. |
-| Runtime | Local-model friendly operation | Works with local OpenAI-compatible endpoints such as LM Studio and Ollama, including browser retrieval against local endpoints. |
-| Runtime | ACP-compatible execution | Supports ACP-style execution paths for agent-oriented integrations. |
-| Resilience | Checkpoint and resume | Stores pipeline checkpoints and supports resumable progress for long, expensive runs. |
-| Resilience | Sub-stage recovery | Persists state for expensive work like drafting, iterative refinement, code generation, and external review artifacts. |
-| Tooling | CLI utilities | Includes `run`, `list-stages`, `validate`, `doctor`, and `report` commands for execution, validation, health checks, and reporting. |
-| Tooling | Execution controls | Supports controls like bucket-scoped runs, one-stage runs, auto-approval, skipping noncritical failures, and skipping preflight checks. |
-| Learning | EvolutionStore | Extracts lessons from prior runs and builds prompt overlays so the system can learn from past failures and quality issues. |
+| Feature | ScholarClaw | AutoResearchClaw | Notes |
+| --- | --- | --- | --- |
+| Staged research pipeline | ✓ | ✓ | ScholarClaw currently uses a 29-stage pipeline; AutoResearchClaw documents a 23-stage pipeline. |
+| **Agentic browser retrieval across scholarly sites** | ✓ | ✓ | **Core ScholarClaw emphasis:** both projects support browser-based collection, but ScholarClaw treats source-aware browser retrieval as a first-class literature path rather than a side toggle. |
+| Bucketed execution | ✓ | ✗ | ScholarClaw exposes `proposal`, `execution`, `publication`, `review`, and `revision` buckets as direct run scopes. |
+| Dedicated external review bucket | ✓ | ✗ | ScholarClaw separates external review into its own post-publication review flow. |
+| Dedicated external revision bucket | ✓ | ✗ | ScholarClaw separates external revision into its own follow-up workflow rather than burying it inside publication. |
+| OpenAlex / Semantic Scholar / arXiv retrieval | ✓ | ✓ | Both projects use a real multi-source literature path centered on OpenAlex, Semantic Scholar, and arXiv. |
+| Headless browser retrieval mode | ✓ | ✗ | ScholarClaw supports visible or headless browser automation for literature search workflows. |
+| Explicit browser target registry | ✓ | ✗ | ScholarClaw ships first-class browser targets for Semantic Scholar, arXiv, Elsevier / ScienceDirect, Springer, IEEE Xplore, Google Scholar, and Web of Science. |
+| Year window controls | ✓ | ✗ | ScholarClaw supports recent-year presets and explicit `start_year` / `end_year` bounds. |
+| Retrieval depth controls | ✓ | ✗ | ScholarClaw supports `fast`, `standard`, `deep`, and `exhaustive` retrieval policies. |
+| Search hardening and deduplication | ✓ | ✓ | Both harden search behavior and deduplicate literature results. |
+| Proposal / goal grounding | ✓ | ✗ | ScholarClaw explicitly grounds early proposal artifacts with collected and verified evidence. |
+| Multiple screening modes | ✓ | ✗ | ScholarClaw exposes `deterministic`, `llm`, and `hybrid` literature screening modes. |
+| Novelty and positioning checks | ✓ | ✗ | ScholarClaw explicitly foregrounds novelty and positioning support in the workflow. |
+| Citation verification | ✓ | ✓ | Both verify citations through multiple layers rather than trusting raw generation. |
+| Citation relevance pruning | ✓ | ✓ | Both include relevance-aware citation cleanup. |
+| Publication-aware writing | ✓ | ✓ | AutoResearchClaw focuses on conference-oriented writing; ScholarClaw extends this toward publication-family-aware behavior. |
+| Custom LaTeX template path | ✓ | ✗ | ScholarClaw allows a user-provided LaTeX template path in addition to template selection behavior. |
+| BenchmarkAgent | ✓ | ✓ | Both include benchmark-aware experiment support. |
+| FigureAgent | ✓ | ✓ | Both include figure-generation paths. |
+| Parallel reviewer workflows | ✓ | ✓ | Both support multi-agent review. |
+| Resumable review manifests | ✓ | ✗ | ScholarClaw persists reviewer outputs and manifests so finished reviews can be reused. |
+| Structured revision planning | ✓ | ✗ | ScholarClaw builds revision plans directly from editor and reviewer outputs. |
+| Stage-specific model routing | ✓ | ✗ | ScholarClaw lets different model choices be assigned to different stage groups through YAML. |
+| Local-model friendly LM Studio / Ollama path | ✓ | ✗ | ScholarClaw explicitly documents local OpenAI-compatible operation with LM Studio and Ollama-style setups. |
+| ACP-compatible execution | ✓ | ✓ | Both projects expose ACP-compatible execution paths. |
+| Checkpoint and resume | ✓ | ✓ | Both support resumable long runs. |
+| Persisted sub-stage recovery | ✓ | ✗ | AutoResearchClaw has repair loops and checkpoint-oriented HITL modes; ScholarClaw additionally persists more fine-grained sub-stage state and review artifacts. |
+| `validate` / `doctor` / `report` commands | ✓ | ✗ | ScholarClaw includes explicit config validation, environment health checks, and run report generation. |
+| One-stage and bucket-scoped execution | ✓ | ✗ | ScholarClaw exposes exact-stage runs plus bucket-scoped runs as first-class CLI controls. |
+| Cross-run learning | ✓ | ✓ | ScholarClaw uses `EvolutionStore`; AutoResearchClaw documents MetaClaw integration. |
 
 ## Workflow Philosophy
 
@@ -192,6 +199,11 @@ ScholarClaw is currently in active development.
 The direction is clear: better research judgment earlier, stronger evidence throughout, and more defensible work by the time a paper is written.
 
 For a fuller product tour, see `FEATURES.md`.
+
+## Coming Soon
+
+- Full-featured web interface that starts with entering a research idea and carries the workflow all the way to a produced paper.
+- End-to-end UI for configuring runs, monitoring stage progress, browsing artifacts, and managing long-running review, revision, and approval workflows without living in the terminal.
 
 ## Documentation Roadmap
 
