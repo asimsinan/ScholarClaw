@@ -1,5 +1,7 @@
 ![ScholarClaw logo](logo.png)
 
+[Türkçe](README.tr.md) / **English**
+
 # ScholarClaw
 
 Proposal-first research, grounded in evidence.
@@ -197,8 +199,6 @@ It is especially useful when you want to:
 ScholarClaw is currently in active development.
 
 The direction is clear: better research judgment earlier, stronger evidence throughout, and more defensible work by the time a paper is written.
-
-For a fuller product tour, see `FEATURES.md`.
 
 ## Coming Soon
 
